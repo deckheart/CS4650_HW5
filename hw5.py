@@ -30,8 +30,8 @@ newsapi = NewsApiClient (api_key='5bf5a4f5b674417a9d729f397e5785de')
 
 articles = []
 for pagina in range(5):
-  temp = newsapi.get_everything(q='coronavirus', language='en', from_param='2021-02-24',
-                              to='2021-03-03', sort_by='relevancy', page=pagina+1)
+  temp = newsapi.get_everything(q='coronavirus', language='en', from_param='2021-02-26',
+                              to='2021-03-25', sort_by='relevancy', page=pagina+1)
   articles.append(temp)
   #print(temp)
 
@@ -71,8 +71,7 @@ def get_keywords_eng(content):
   return result
 
 results = []
-for content in df.desc.values:
-    # use description instead of content since content is truncated
+for content in df.content.values:
     results.append([('#' + x[0]) for x in Counter(get_keywords_eng(content)).most_common(5)])
 
     #for x in Counter(get_keywords_eng(content)).most_common(5):
@@ -86,6 +85,9 @@ pickle.dump(df, open(filename, 'wb'))
 df.to_csv(r'dataset.csv', index=False)
 
 df.head()
+
+print(df[['content', 'keywords']])
+
 
 text = str(results)
 wordcloud = WordCloud(max_font_size=50, max_words=100, background_color="white").generate(text)
